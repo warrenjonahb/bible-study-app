@@ -1,0 +1,2 @@
+Notes for Bible App
+https://github.com/openscriptures/strongs for strongs lookup (lemma, transliteration, meaning).
