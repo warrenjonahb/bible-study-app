@@ -32,7 +32,6 @@ def get_chapter(book_number, chapter):
     return rows
 
 # --- PyQt5 App ---
-
 class FlowLayout(QLayout):
     """A QLayout that positions child widgets similar to text flow."""
 
@@ -144,6 +143,18 @@ class BibleApp(QWidget):
         load_btn.clicked.connect(self.load_chapter)
         control_layout.addWidget(load_btn)
 
+        # Chapter navigation buttons
+        nav_layout = QHBoxLayout()
+        self.prev_button = QPushButton("Previous Chapter")
+        self.prev_button.clicked.connect(self.go_previous_chapter)
+        nav_layout.addWidget(self.prev_button)
+
+        self.next_button = QPushButton("Next Chapter")
+        self.next_button.clicked.connect(self.go_next_chapter)
+        nav_layout.addWidget(self.next_button)
+
+        control_layout.addLayout(nav_layout)
+
         main_layout.addLayout(control_layout)
 
         # --- Scroll area for verses ---
@@ -228,6 +239,48 @@ class BibleApp(QWidget):
             verse_widget.setLayout(verse_layout)
             self.scroll_layout.addWidget(verse_widget)
 
+    def go_previous_chapter(self):
+        """Navigate to the previous chapter or book if available."""
+        if self.chapter_dropdown.count() == 0:
+            return
+
+        current_chapter_index = self.chapter_dropdown.currentIndex()
+        if current_chapter_index > 0:
+            self.chapter_dropdown.setCurrentIndex(current_chapter_index - 1)
+            self.load_chapter()
+            return
+
+        current_book_index = self.book_dropdown.currentIndex()
+        if current_book_index <= 0:
+            return
+
+        self.book_dropdown.setCurrentIndex(current_book_index - 1)
+        last_chapter_index = self.chapter_dropdown.count() - 1
+        if last_chapter_index >= 0:
+            self.chapter_dropdown.setCurrentIndex(last_chapter_index)
+            self.load_chapter()
+
+    def go_next_chapter(self):
+        """Navigate to the next chapter or book if available."""
+        if self.chapter_dropdown.count() == 0:
+            return
+
+        current_chapter_index = self.chapter_dropdown.currentIndex()
+        if current_chapter_index < self.chapter_dropdown.count() - 1:
+            self.chapter_dropdown.setCurrentIndex(current_chapter_index + 1)
+            self.load_chapter()
+            return
+
+        current_book_index = self.book_dropdown.currentIndex()
+        if current_book_index >= self.book_dropdown.count() - 1:
+            return
+
+        self.book_dropdown.setCurrentIndex(current_book_index + 1)
+        if self.chapter_dropdown.count() > 0:
+            self.chapter_dropdown.setCurrentIndex(0)
+            self.load_chapter()
+
+    
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = BibleApp()
