@@ -1,0 +1,22 @@
+# ─── Python ───────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+bible_env/
+
+# ─── Node / Frontend ───────────────────────
+frontend/node_modules/
+frontend/dist/
+
+# ─── Databases (optional) ──────────────────
+*.sqlite
+
+# ─── IDE / OS files ────────────────────────
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ─── Logs ──────────────────────────────────
+*.log
